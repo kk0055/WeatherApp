@@ -1,0 +1,18 @@
+  2020/10/31
+  
+  *******************************/
+  2020/10/30
+  Skyconsが反応しない
+  →互換性がないのかも。いったんパス
+
+  Daily dataとかがINVALID APIになる
+Daily data出せた。明日やってみる
+  ***********************/
+  2020/10/29
+npmがなぜかよくエラーが出る。ググってすぐ解決はするけどなんでなのか。
+scriptはBodyの最後に読み込ませる必要あり
+    <script src="/js/app.js"></script>
+
+   SkyDarkAPIの提供も終わってたからOpenweatherAPIを使う
+    composer require kitetail/zttp
+    エラーになったからGuzzleを使ってやってみる
