@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Wheather App</title>
     <link rel="stylesheet" href="/css/main.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/places.js@1.18.1" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/places.js@1.19.0"></script>
+ 
 </head>
 
 <body class="bg-blue-200">
@@ -16,6 +16,6 @@
     </div>
     <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script>
     <script src="/js/app.js"></script>
-  
+
 </body>
 </html>
