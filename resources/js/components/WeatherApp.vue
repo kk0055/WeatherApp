@@ -13,19 +13,26 @@
         <small>°C</small>
        </div>
 
-       <div class="">{{currentTemperature.feels}}</div>
+       <!-- <div class="">{{currentTemperature.feels}}</div> -->
    </div>
    <div class="mx-5">
-       <div class="font-semibold">{{ currentTemperature.weather }}</div>
+       <!-- <div class="font-semibold">{{ currentTemperature.weather }}</div> -->
        <div class="">{{location.name}}</div>
    </div>
     </div>
- <!-- <canvas id="iconCurrent" ref="iconCurrent" width="128" height="128"></canvas> -->
-  
-  <img src="" id="wicon">
+  <img :src="currentTemperature.iconUrl" id="wicon">
 
 </div>
-<div class="future-weather text-sm bg-gray-800 px-6 py-8 overflow-hidden">
+<div class="flex justify-end mx-3">
+    <h1>{{currentTemperature.feels}} だよ。</h1>
+   {{  coldWeather()  }}
+  <span class="text-orange-500">{{ vote()  }}</span> 
+    <img src="https://pbs.twimg.com/profile_images/1301044744303198213/5fdD8wLG_400x400.jpg" alt="" 
+    class=" w-20 max-w-lg  rounded-full ml-2">
+    
+</div>
+
+<div class="future-weather text-sm bg-gray-800 px-6 py-8 overflow-hidden ">
     <div 
      v-for="(day,index) in daily"
      :key="day.index"
@@ -35,7 +42,9 @@
         <div class="w-4/6 px-4 flex items-center">
         <div >{{day.weather[0].description}}</div>
         <div class="ml-3"> Humidity {{day.humidity}}</div> 
+       
         </div>
+        
           <div class="w-1/6 text-right">
             <div>Max {{Math.round(day.temp.max - 273.15 )}}°C</div> 
             <div>Min {{Math.round(day.temp.min - 273.15 )}}°C</div> 
@@ -98,14 +107,15 @@
                  weather: '',
                  temp_max: '',
                  humidity: '',
-                 
+                                 
              },
+             msg:'',
              daily:[],
              location: {
                  name: '',
                     lat: 43.6532,
-                   lng: -79.38323,
-                  api:'6a003d58551a50f0e7670c16009ea9f3',
+                    lng: -79.38323,
+                    api:'6a003d58551a50f0e7670c16009ea9f3',
                  timezone: ''
              }
 
@@ -113,7 +123,6 @@
         },
         methods: {
             fetchData() {
-                // var skycons = new Skycons({"color": "pink"});
             fetch(`http://api.openweathermap.org/data/2.5/onecall?lat=${this.location.lat}&lon=${this.location.lng}&appid=6a003d58551a50f0e7670c16009ea9f3`)
 
  
@@ -127,7 +136,6 @@
             this.currentTemperature.feels =data.current.weather[0].description
             this.currentTemperature.weather =data.current.weather[0].main
             this.location.name =data.timezone
-            this.currentTemperature.icon = this.toKebabCase(data.current.weather[0].description)
             this.daily = data.daily
             this.location.timezone = data.timezone_offset
 
@@ -138,17 +146,13 @@
            console.log( this.currentTemperature.iconUrl )
 
         //当日用データ
-   // this.currentTemperature.actual = Math.round(data.main.temp - 273.15 )
+       // this.currentTemperature.actual = Math.round(data.main.temp - 273.15 )
                     // this.currentTemperature.temp_max = Math.round(data.main.temp_max - 273.15 )
                     // this.currentTemperature.humidity = data.main.humidity 
 
                     // this.currentTemperature.icon = data.weather[0].icon
 
-                    //forのデータ
-                    // this.currentTemperature.loop = data.main.temp
-                 
-            // skycons.add("iconCurrent", )
-            // skycons.play()
+              
             console.log( this.currentTemperature.icon )
         })
     },
@@ -169,6 +173,17 @@
       
       img.setAttribute('src','icon');
       return icon
+    },
+    coldWeather() {
+         if( this.currentTemperature.actual  < 18 && this.location.name.indexOf('America')  === -1 ) {
+             this.msg = '寒いよ。固まるよ'
+             return this.msg
+         }
+    },
+    vote() {
+        if(  this.location.name.indexOf('America')  !== -1) {
+            return this.msg = 'VOTE!!';
+        }
     }
         }
     }

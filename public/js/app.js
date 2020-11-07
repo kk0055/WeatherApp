@@ -1957,6 +1957,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -2003,6 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
         temp_max: '',
         humidity: ''
       },
+      msg: '',
       daily: [],
       location: {
         name: '',
@@ -2017,7 +2027,6 @@ __webpack_require__.r(__webpack_exports__);
     fetchData: function fetchData() {
       var _this2 = this;
 
-      // var skycons = new Skycons({"color": "pink"});
       fetch("http://api.openweathermap.org/data/2.5/onecall?lat=".concat(this.location.lat, "&lon=").concat(this.location.lng, "&appid=6a003d58551a50f0e7670c16009ea9f3")).then(function (response) {
         return response.json();
       }).then(function (data) {
@@ -2026,7 +2035,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.currentTemperature.feels = data.current.weather[0].description;
         _this2.currentTemperature.weather = data.current.weather[0].main;
         _this2.location.name = data.timezone;
-        _this2.currentTemperature.icon = _this2.toKebabCase(data.current.weather[0].description);
         _this2.daily = data.daily;
         _this2.location.timezone = data.timezone_offset; //アイコン
 
@@ -2037,10 +2045,6 @@ __webpack_require__.r(__webpack_exports__);
         // this.currentTemperature.temp_max = Math.round(data.main.temp_max - 273.15 )
         // this.currentTemperature.humidity = data.main.humidity 
         // this.currentTemperature.icon = data.weather[0].icon
-        //forのデータ
-        // this.currentTemperature.loop = data.main.temp
-        // skycons.add("iconCurrent", )
-        // skycons.play()
 
         console.log(_this2.currentTemperature.icon);
       });
@@ -2059,6 +2063,17 @@ __webpack_require__.r(__webpack_exports__);
       var icon = '';
       img.setAttribute('src', 'icon');
       return icon;
+    },
+    coldWeather: function coldWeather() {
+      if (this.currentTemperature.actual < 18 && this.location.name.indexOf('America') === -1) {
+        this.msg = '寒いよ。固まるよ';
+        return this.msg;
+      }
+    },
+    vote: function vote() {
+      if (this.location.name.indexOf('America') !== -1) {
+        return this.msg = 'VOTE!!';
+      }
     }
   }
 });
@@ -37677,29 +37692,42 @@ var render = function() {
                 _c("div", { staticClass: "text-6xl font-semi" }, [
                   _vm._v(_vm._s(_vm.currentTemperature.actual) + "\n        "),
                   _c("small", [_vm._v("°C")])
-                ]),
-                _vm._v(" "),
-                _c("div", {}, [_vm._v(_vm._s(_vm.currentTemperature.feels))])
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mx-5" }, [
-                _c("div", { staticClass: "font-semibold" }, [
-                  _vm._v(_vm._s(_vm.currentTemperature.weather))
-                ]),
-                _vm._v(" "),
                 _c("div", {}, [_vm._v(_vm._s(_vm.location.name))])
               ])
             ]),
             _vm._v(" "),
-            _c("img", { attrs: { src: "", id: "wicon" } })
+            _c("img", {
+              attrs: { src: _vm.currentTemperature.iconUrl, id: "wicon" }
+            })
           ]
         ),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex justify-end mx-3" }, [
+          _c("h1", [_vm._v(_vm._s(_vm.currentTemperature.feels) + " だよ。")]),
+          _vm._v("\n   " + _vm._s(_vm.coldWeather()) + "\n  "),
+          _c("span", { staticClass: "text-orange-500" }, [
+            _vm._v(_vm._s(_vm.vote()))
+          ]),
+          _vm._v(" "),
+          _c("img", {
+            staticClass: " w-20 max-w-lg  rounded-full ml-2",
+            attrs: {
+              src:
+                "https://pbs.twimg.com/profile_images/1301044744303198213/5fdD8wLG_400x400.jpg",
+              alt: ""
+            }
+          })
+        ]),
         _vm._v(" "),
         _c(
           "div",
           {
             staticClass:
-              "future-weather text-sm bg-gray-800 px-6 py-8 overflow-hidden"
+              "future-weather text-sm bg-gray-800 px-6 py-8 overflow-hidden "
           },
           _vm._l(_vm.daily, function(day, index) {
             return _c(
